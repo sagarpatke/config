@@ -38,7 +38,6 @@
     keyMap = "dvorak";
   };
 
-  
 
   # Configure keymap in X11
   services.xserver.enable = true;
@@ -58,7 +57,12 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sagar = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" "adbusers" ]; # Enable ‘sudo’ for the user.
+  };
+
+  users.users.sagaratl = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "docker" "adbusers" ];
   };
 
   # Allow unfree packages for google-chrome, virtualbox, etc.
@@ -66,9 +70,19 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    ntfs3g
+    fuse
+    bind
+    macchanger
+    irssi
     wget
+    jekyll
+    ruby
     vim
-    firefox
+    gimp
+    packer
+    openssl
+    bashSnippets
     google-chrome
     git
     vscode
@@ -76,12 +90,24 @@
     teams
     docker-compose
     vagrant
+    zip
+    unzip
+    openjdk8
+    google-cloud-sdk
+    kubernetes-helm
+    kubectl
+    minikube
+    terraform
+    awscli2
+    istioctl
+    libreoffice-fresh
+    nodejs_latest
   ];
 
   # Install Virtualbox
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
-  users.extraGroups.vboxusers.members = [ "sagar" ];
+  users.extraGroups.vboxusers.members = [ "sagar" "sagaratl" ];
   virtualisation.docker.enable = true;
 
   # Install Vagrant
@@ -93,6 +119,9 @@
   # Install Graphical Desktop
   services.xserver.desktopManager.pantheon.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
+
+  # Install adb
+  programs.adb.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -122,4 +151,3 @@
   system.stateVersion = "20.09"; # Did you read the comment?
 
 }
-
